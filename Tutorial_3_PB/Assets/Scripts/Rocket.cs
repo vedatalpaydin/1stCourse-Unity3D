@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
@@ -16,9 +17,9 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem deathParticles;
     [SerializeField] ParticleSystem successParticles;
 
-    enum State{ Alive, Dying, Transcending };
+    bool isTranscending = false;
 
-     State state = State.Alive;
+     bool collisionDisabled = false;
     
     Rigidbody rb;
     AudioSource audio;
@@ -31,16 +32,34 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state==State.Alive)
+        if (!isTranscending)
         {
             RespondToThrustInput();
             RespondToRotateInput();
+        }
+
+        if (Debug.isDebugBuild)
+        {
+            RespondToDebugKeys();
+        }
+    }
+
+     void RespondToDebugKeys()
+    {
+        if (Input.GetKey(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            collisionDisabled = !collisionDisabled;
         }
     }
 
     void OnCollisionEnter(Collision col)
     {
-        if (state!=State.Alive) {return;}
+        if (isTranscending || collisionDisabled) {return;}
         switch (col.gameObject.tag)
         {
             case "Friendly":
@@ -55,30 +74,36 @@ public class Rocket : MonoBehaviour
     }
     void StartSuccessSequence()
     {
-        state = State.Transcending;
+        isTranscending=true;
         audio.Stop();
         audio.PlayOneShot(success);
         successParticles.Play();
-        Invoke("LoadNextScene",loadLevelDelay);
+        Invoke("LoadNextLevel",loadLevelDelay);
     }
 
     void StartDeathSequence()
     {
-        state = State.Dying;
+        isTranscending=true;
         audio.Stop();
         audio.PlayOneShot(death);
         mainEngineParticles.Stop();
         deathParticles.Play();
-        Invoke("LoadFirstScene",loadLevelDelay);
+        Invoke("LoadFirstLevel",loadLevelDelay);
     }
-    void LoadFirstScene()
+    void LoadFirstLevel()
     {
         SceneManager.LoadScene(0);
     }
-    void LoadNextScene()
+    void LoadNextLevel()
     {
-        SceneManager.LoadScene(1);
-    }
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex+1;
+        if (nextSceneIndex==SceneManager.sceneCountInBuildSettings)
+        {
+            nextSceneIndex = 0;
+        }
+        SceneManager.LoadScene(nextSceneIndex);
+        }
     void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -87,14 +112,20 @@ public class Rocket : MonoBehaviour
         }
         else
         {
-            audio.Stop();
-            mainEngineParticles.Stop();
+            StopApplyingThrust();
         }
     }
+
+     void StopApplyingThrust()
+    {
+        audio.Stop();
+        mainEngineParticles.Stop();
+    }
+
     void RespondToRotateInput()
     {
+        rb.angularVelocity = Vector3.zero;
         float rotateThisFrame = rcsThrust * Time.deltaTime;
-        rb.freezeRotation = true;
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.forward*rotateThisFrame);
@@ -103,7 +134,6 @@ public class Rocket : MonoBehaviour
         {
             transform.Rotate(-Vector3.forward*rotateThisFrame);
         }
-        rb.freezeRotation = false;
     }
     void ApplyThrust()
     {
