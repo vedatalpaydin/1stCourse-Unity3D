@@ -28,7 +28,5 @@ public class Oscillator : MonoBehaviour
         movementFactor = rawSinWave / 2f + 0.5f;
         Vector3 offset = movementFactor * movementVector;
         transform.position = startPos + offset;
-
-
     }
 }

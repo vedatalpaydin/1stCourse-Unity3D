@@ -18,8 +18,7 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem successParticles;
 
     bool isTranscending = false;
-
-     bool collisionDisabled = false;
+    bool collisionDisabled = false;
     
     Rigidbody rb;
     AudioSource audio;
