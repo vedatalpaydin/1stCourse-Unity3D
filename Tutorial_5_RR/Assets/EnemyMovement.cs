@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-
-    [SerializeField] private List<Waypoint> _waypoints;
     void Start()
     {
-        StartCoroutine(MoveTheEnemy());
+        PathFinder pathFinder = FindObjectOfType<PathFinder>();
+        var path=pathFinder.GetPath();
+        StartCoroutine(MoveTheEnemy(path));
     }
 
-    IEnumerator MoveTheEnemy()
+    IEnumerator MoveTheEnemy(List<Waypoint> path)
     {
-        foreach (Waypoint waypoint in _waypoints)
+        foreach (Waypoint waypoint in path)
         {
             transform.position = waypoint.transform.position;
             yield return new WaitForSeconds(1f);
