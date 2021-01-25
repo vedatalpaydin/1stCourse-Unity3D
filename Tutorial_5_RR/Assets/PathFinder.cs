@@ -49,6 +49,13 @@ public class PathFinder : MonoBehaviour
         path.Add(startWaypoint);
         path.Reverse();
         
+        foreach (Waypoint waypoint in path)
+        {
+            if (waypoint.isPlaceable)
+            {
+                waypoint.isPlaceable = false;
+            }
+        }
     }
 
     private void BreadthFirstSearch()

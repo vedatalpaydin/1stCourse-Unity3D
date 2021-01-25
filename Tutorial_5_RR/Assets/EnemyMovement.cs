@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem deathParticle;
     void Start()
     {
         PathFinder pathFinder = FindObjectOfType<PathFinder>();
@@ -16,8 +17,13 @@ public class EnemyMovement : MonoBehaviour
         foreach (Waypoint waypoint in path)
         {
             transform.position = waypoint.transform.position;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
         }
+        var vFX= Instantiate(deathParticle,transform.position, Quaternion.identity);
+        vFX.Play();
+        float destroyDelay = vFX.main.duration;
+        Destroy(vFX.gameObject,destroyDelay);
+        Destroy(gameObject);
     }
         
     void Update()

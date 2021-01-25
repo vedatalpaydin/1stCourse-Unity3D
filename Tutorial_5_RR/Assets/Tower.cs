@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class LookTarget : MonoBehaviour
+public class Tower : MonoBehaviour
 {
-    [SerializeField] private Transform LookForPan; 
+    [SerializeField] private Transform LookForPan;
     Transform enemy;
+    public  Waypoint baseWaypoint;
 
     [SerializeField] ParticleSystem projectile;
 
@@ -71,4 +72,5 @@ public class LookTarget : MonoBehaviour
         var emmisionModule = projectile.emission;
         emmisionModule.enabled = isActive;
     }
+
 }

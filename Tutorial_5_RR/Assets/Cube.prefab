@@ -133,7 +133,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2852508700615722699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -172,7 +172,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2852508700615722699}
-  m_Text: 0,0
+  m_Text: 1,0
   m_OffsetZ: 0
   m_CharacterSize: 2
   m_LineSpacing: 1
@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 4598421091481150774}
   - component: {fileID: 5795213820495366085}
   - component: {fileID: 5139192003408236622}
+  - component: {fileID: 2247441138673388330}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -246,6 +247,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isExplored: 0
   exploredFromm: {fileID: 0}
+  isPlaceable: 1
+  turretPrefab: {fileID: 3979846838765114534, guid: c93efe5ce3b044f15b18447dd8dd9496,
+    type: 3}
+--- !u!65 &2247441138673388330
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7358391968108730529}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: -5, z: 0}
 --- !u!1001 &7617761494990817092
 PrefabInstance:
   m_ObjectHideFlags: 0

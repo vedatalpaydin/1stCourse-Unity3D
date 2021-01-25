@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookForPan: {fileID: 3978318789596137591}
-  enemy: {fileID: 0}
+  shootSFX: {fileID: 8300000, guid: b1893a47d9f584cf989fef2553c51c9f, type: 3}
+  baseWaypoint: {fileID: 0}
   projectile: {fileID: 4663651451450403042}
 --- !u!1001 &3979846838703815711
 PrefabInstance:
@@ -284,6 +285,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4301635373937546616, guid: 06531542116e0495ca420c291e9dace6,
+        type: 3}
+      propertyPath: CollisionModule.minKillSpeed
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06531542116e0495ca420c291e9dace6, type: 3}

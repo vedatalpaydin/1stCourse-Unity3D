@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private EnemyMovement enemy;
+    [SerializeField] private Transform enemyParent;
+    [SerializeField] private AudioClip spawnSFX;
     [Range(0.1f,120f)] [SerializeField] float secondsBetweenSpawns=5f;
     void Start()
     {
@@ -13,9 +15,11 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator EnemySpawn()
     {
-        while (true)
+        while (true) 
         {
-            Instantiate(enemy,transform.position, Quaternion.identity);
+            var newEnemy=Instantiate(enemy,transform.position, Quaternion.identity);
+            GetComponent<AudioSource>().PlayOneShot(spawnSFX);
+            newEnemy.transform.parent = enemyParent;
             yield return new WaitForSeconds(secondsBetweenSpawns);
         }
     }
