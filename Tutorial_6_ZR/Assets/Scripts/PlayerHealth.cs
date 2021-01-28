@@ -6,7 +6,12 @@ public class PlayerHealth : MonoBehaviour
 {
     
     [SerializeField] private float health = 10f;
+    private DeathHandler _deathHandler;
 
+    void Start()
+    {
+        _deathHandler = GetComponent<DeathHandler>();
+    }
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -18,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void KillEnemy()
     {
+        _deathHandler.DeathSceneLoader();
         Debug.Log("you are dead");
-        //Destroy(gameObject);
     }
 }

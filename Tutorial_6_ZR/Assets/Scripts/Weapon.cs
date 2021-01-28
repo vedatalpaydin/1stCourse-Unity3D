@@ -1,33 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private float range = 100f;
+    [SerializeField] private float damage = 50f;
+    [SerializeField] private float timeBetweenShots = 1f;
     [SerializeField] private ParticleSystem muzzkeFlash;
     [SerializeField] private GameObject hitVFX;
-    
-    private float damage = 1f;
+    [SerializeField] private Ammo ammoSlot;
+    [SerializeField] private AmmoType ammoType;
+    [SerializeField] private TextMeshProUGUI ammoText;
     private EnemyHealth _enemyHealth;
+    private bool canShoot = true;
 
+    void OnEnable()
+    {
+        canShoot = true;
+    }
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        DisplayAmmo();
+        if (Input.GetButtonDown("Fire1") && canShoot)
         {
-            Shoot();
+           StartCoroutine(Shoot()) ;
         }   
     }
 
-    void Shoot()
+    void DisplayAmmo()
     {
-        PlayMuzzkeFkash();
-        ProcessRaycast();
+        int currentAmmo = ammoSlot.GetCurrentAmmo(ammoType);
+        ammoText.text = currentAmmo.ToString();
+    }
+    IEnumerator Shoot()
+    {
+        canShoot = false;
+        if (ammoSlot.GetCurrentAmmo(ammoType)>0)
+        {
+            PlayMuzzkeFkash();
+            ProcessRaycast();
+            ammoSlot.ReduceCurrentAmmo(ammoType);
+        }
+          
+        yield return new WaitForSeconds(timeBetweenShots);
+        canShoot = true;
     }
 
     void ProcessRaycast()
     {
+        
         RaycastHit hit;
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, range))
         {
